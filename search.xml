@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>第一篇blog</title>
+    <url>/2021/05/28/%E7%AC%AC%E4%B8%80%E7%AF%87blog/</url>
+    <content><![CDATA[<p>欢迎来到<a href="https://shineme.ltd/">Shineme的世界</a>，这里是我的博客，也欢迎小伙伴们访问我的<a href="http://xmt.shineme.ltd/">个人主页</a> or you can ask me on <a href="https://github.com/xmt3061123">GitHub</a>.</p>
+]]></content>
+      <tags>
+        <tag>生活</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>发文章步骤</title>
     <url>/2021/05/28/%E5%8F%91%E6%96%87%E7%AB%A0%E6%AD%A5%E9%AA%A4/</url>
     <content><![CDATA[<h2 id="发文章的步骤"><a href="#发文章的步骤" class="headerlink" title="发文章的步骤"></a>发文章的步骤</h2><span id="more"></span>
@@ -20,15 +29,6 @@
 ]]></content>
       <tags>
         <tag>技能</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第一篇blog</title>
-    <url>/2021/05/28/%E7%AC%AC%E4%B8%80%E7%AF%87blog/</url>
-    <content><![CDATA[<p>欢迎来到<a href="https://shineme.ltd/">Shineme的世界</a>，这里是我的博客，也欢迎小伙伴们访问我的<a href="http://xmt.shineme.ltd/">个人主页</a> or you can ask me on <a href="https://github.com/xmt3061123">GitHub</a>.</p>
-]]></content>
-      <tags>
-        <tag>生活</tag>
       </tags>
   </entry>
 </search>
