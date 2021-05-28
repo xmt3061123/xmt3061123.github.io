@@ -1,34 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search>
-  <entry>
-    <title>第一篇blog</title>
-    <url>/2021/05/28/%E7%AC%AC%E4%B8%80%E7%AF%87blog/</url>
-    <content><![CDATA[<p>欢迎来到<a href="https://shineme.ltd/">Shineme的世界</a>，这里是我的博客，也欢迎小伙伴们访问我的<a href="http://xmt.shineme.ltd/">个人主页</a> or you can ask me on <a href="https://github.com/xmt3061123">GitHub</a>.</p>
-]]></content>
-      <tags>
-        <tag>生活</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>发文章步骤</title>
-    <url>/2021/05/28/%E5%8F%91%E6%96%87%E7%AB%A0%E6%AD%A5%E9%AA%A4/</url>
-    <content><![CDATA[<h2 id="发文章的步骤"><a href="#发文章的步骤" class="headerlink" title="发文章的步骤"></a>发文章的步骤</h2><span id="more"></span>
-
-<h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-      <tags>
-        <tag>技能</tag>
-      </tags>
-  </entry>
+<search> 
+  
+  
+    
+    <entry>
+      <title>发文章步骤</title>
+      <link href="2021/05/28/%E5%8F%91%E6%96%87%E7%AB%A0%E6%AD%A5%E9%AA%A4/"/>
+      <url>2021/05/28/%E5%8F%91%E6%96%87%E7%AB%A0%E6%AD%A5%E9%AA%A4/</url>
+      
+        <content type="html"><![CDATA[<h2 id="发文章的步骤"><a href="#发文章的步骤" class="headerlink" title="发文章的步骤"></a>发文章的步骤</h2><span id="more"></span><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 技能 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>第一篇blog</title>
+      <link href="2021/05/28/%E7%AC%AC%E4%B8%80%E7%AF%87blog/"/>
+      <url>2021/05/28/%E7%AC%AC%E4%B8%80%E7%AF%87blog/</url>
+      
+        <content type="html"><![CDATA[<p>欢迎来到<a href="https://shineme.ltd/">Shineme的世界</a>，这里是我的博客，也欢迎小伙伴们访问我的<a href="http://xmt.shineme.ltd/">个人主页</a> or you can ask me on <a href="https://github.com/xmt3061123">GitHub</a>.</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 生活 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
 </search>
