@@ -31,4 +31,13 @@
         <tag>生活</tag>
       </tags>
   </entry>
+  <entry>
+    <title>python</title>
+    <url>/2021/06/01/python/</url>
+    <content><![CDATA[<p>练习<br>-请设计一个decorator，它可以作用域任何函数上，并打印该函数的执行时间：<br>#-<em>-coding：UTF-8-</em>-<br>import time, functols<br>def metric(fn);<br>    print(‘%s executed inf %s ms’%(fn.<em>name</em>, 10.24))<br>    return fn</p>
+]]></content>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
 </search>
