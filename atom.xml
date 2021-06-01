@@ -6,7 +6,7 @@
   <link href="https://shineme.ltd/atom.xml" rel="self"/>
   
   <link href="https://shineme.ltd/"/>
-  <updated>2021-06-01T07:35:34.258Z</updated>
+  <updated>2021-06-01T07:38:33.073Z</updated>
   <id>https://shineme.ltd/</id>
   
   <author>
@@ -21,14 +21,15 @@
     <link href="https://shineme.ltd/2021/06/01/python/"/>
     <id>https://shineme.ltd/2021/06/01/python/</id>
     <published>2021-06-01T07:16:06.000Z</published>
-    <updated>2021-06-01T07:35:34.258Z</updated>
+    <updated>2021-06-01T07:38:33.073Z</updated>
     
-    <content type="html"><![CDATA[<p>练习<br>-请设计一个decorator，它可以作用域任何函数上，并打印该函数的执行时间：<br>#-<em>-coding：UTF-8-</em>-<br>import time, functols<br>def metric(fn);<br>    print(‘%s executed inf %s ms’%(fn.<em>name</em>, 10.24))<br>    return fn</p>]]></content>
+    <content type="html"><![CDATA[<p>###练习<br>##请设计一个decorator，它可以作用域任何函数上，并打印该函数的执行时间：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-*-coding：UTF-8-*-</span></span><br><span class="line">import time, functols</span><br><span class="line">def metric(fn);</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;%s executed inf %s ms&#x27;</span>%(fn._name_, 10.24))</span><br><span class="line"><span class="built_in">return</span> fn</span><br></pre></td></tr></table></figure>]]></content>
     
     
       
       
-    <summary type="html">&lt;p&gt;练习&lt;br&gt;-请设计一个decorator，它可以作用域任何函数上，并打印该函数的执行时间：&lt;br&gt;#-&lt;em&gt;-coding：UTF-8-&lt;/em&gt;-&lt;br&gt;import time, functols&lt;br&gt;def metric(fn);&lt;br&gt;    print(‘%s</summary>
+    <summary type="html">&lt;p&gt;###练习&lt;br&gt;##请设计一个decorator，它可以作用域任何函数上，并打印该函数的执行时间：&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;lin</summary>
       
     
     

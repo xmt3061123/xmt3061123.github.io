@@ -34,8 +34,8 @@
   <entry>
     <title>python</title>
     <url>/2021/06/01/python/</url>
-    <content><![CDATA[<p>练习<br>-请设计一个decorator，它可以作用域任何函数上，并打印该函数的执行时间：<br>#-<em>-coding：UTF-8-</em>-<br>import time, functols<br>def metric(fn);<br>    print(‘%s executed inf %s ms’%(fn.<em>name</em>, 10.24))<br>    return fn</p>
-]]></content>
+    <content><![CDATA[<p>###练习<br>##请设计一个decorator，它可以作用域任何函数上，并打印该函数的执行时间：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#-*-coding：UTF-8-*-</span></span><br><span class="line">import time, functols</span><br><span class="line">def metric(fn);</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&#x27;%s executed inf %s ms&#x27;</span>%(fn._name_, 10.24))</span><br><span class="line">	<span class="built_in">return</span> fn</span><br></pre></td></tr></table></figure>]]></content>
       <tags>
         <tag>python</tag>
       </tags>
