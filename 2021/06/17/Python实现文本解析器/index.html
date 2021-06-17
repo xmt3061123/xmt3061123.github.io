@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="http://xmt.shineme.ltd/yunpan/view.php/5a029563fe3214c96f68b46556670ea1.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shineme.ltd","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Python 实现文本解析器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python实现文本解析器">
+<meta property="og:url" content="https://shineme.ltd/2021/06/17/Python%E5%AE%9E%E7%8E%B0%E6%96%87%E6%9C%AC%E8%A7%A3%E6%9E%90%E5%99%A8/index.html">
+<meta property="og:site_name" content="Shineme的博客">
+<meta property="og:description" content="Python 实现文本解析器">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/7deabee8376b85861440a40a93af0f4c.png">
+<meta property="article:published_time" content="2021-06-17T11:43:19.000Z">
+<meta property="article:modified_time" content="2021-06-17T11:44:05.164Z">
+<meta property="article:author" content="Shineme">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/img_convert/7deabee8376b85861440a40a93af0f4c.png">
+
+<link rel="canonical" href="https://shineme.ltd/2021/06/17/Python%E5%AE%9E%E7%8E%B0%E6%96%87%E6%9C%AC%E8%A7%A3%E6%9E%90%E5%99%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Python实现文本解析器 | Shineme的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Shineme的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <!-- 添加了id，后面改变css样式用 -->
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shineme的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">0</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">7</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    <!-- 改变css样式 -->
+<script type="text/javascript">
+var url = document.location.pathname;
+var folderName = url.substr(1, url.length - 2)
+console.log(folderName);
+
+var listPostUrl = [
+    "/" + folderName + "/" + "post-banner.png",
+    "/" + folderName + "/" + "post-banner.jpg",
+];
+
+var nSuccessCount = 0;
+var nResponceCount = 0;
+function OnHttpResponse(bSuccess, strUrl) {
+    console.log("OnHttpResponse: " + bSuccess + ", " + strUrl);
+    nResponceCount++;
+    if(nSuccessCount > 0){
+        return;
+    }
+    if(bSuccess) {
+        nSuccessCount++;
+        document.getElementById("id-header-inner").style.backgroundImage = "url(" + strUrl + ")";
+    }
+    if(nResponceCount >= listPostUrl.length && nSuccessCount <= 0){
+        // 使用默认图
+        document.getElementById("id-header-inner").style.backgroundImage = "url(/images/background.jpg)";
+    }
+}
+
+function changeBanner(strPostUrl, nIndex){
+    console.log("try to load" + strPostUrl);
+    var xmlhttp;
+    if (window.XMLHttpRequest)
+    {
+        //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {
+        // IE6, IE5 浏览器执行代码
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+            OnHttpResponse(true, strPostUrl);
+        } else {
+            OnHttpResponse(false, strPostUrl);
+        }
+    }
+    xmlhttp.open("HEAD",strPostUrl,true);
+    xmlhttp.send();
+}
+
+listPostUrl.forEach(changeBanner);
+</script>
+
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shineme.ltd/2021/06/17/Python%E5%AE%9E%E7%8E%B0%E6%96%87%E6%9C%AC%E8%A7%A3%E6%9E%90%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://q2.qlogo.cn/headimg_dl?bs=qq&dst_uin=1437604039&spec=100">
+      <meta itemprop="name" content="Shineme">
+      <meta itemprop="description" content="为分享而生">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shineme的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python实现文本解析器
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-17 19:43:19 / 修改时间：19:44:05" itemprop="dateCreated datePublished" datetime="2021-06-17T19:43:19+08:00">2021-06-17</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Python-实现文本解析器"><a href="#Python-实现文本解析器" class="headerlink" title="Python 实现文本解析器 "></a><a target="_blank" rel="noopener" href="https://www.lanqiao.cn/courses/70/">Python 实现文本解析器 </a></h1><span id="more"></span>
+<h2 id="一、-内容介绍"><a href="#一、-内容介绍" class="headerlink" title="一、 内容介绍"></a>一、 内容介绍</h2><p>本节实验我们学习使用 Python 来解析纯文本文件，并生成 HTML 页面。本节实验只是一个简单实现，支持了较少部分的 Markdown 语法，但通过实验中的解析实现思路，同学们可以完成更多更复杂的语法解析实现。</p>
+<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p>-Python 基本语法</p>
+<p>-Python 面向对象编程</p>
+<p>-yield 关键字</p>
+<p>-正则表达式</p>
+<p>-HTML 标记语言</p>
+<h2 id="二、实现原理及步骤"><a href="#二、实现原理及步骤" class="headerlink" title="二、实现原理及步骤"></a>二、实现原理及步骤</h2><p>一共有文本块生成器、处理程序、规则、解析和运行与测试五个步骤，本课程中将创建以下的代码文件，每个文件的作用简介如下：</p>
+<p><strong>•util.py</strong>：实现文本块生成器把纯文本分成一个一个的文本块，以便接下来对每一个文本块进行解析</p>
+<p><strong>•handlers.py</strong>：为文本块打上合适的 HTML 标记</p>
+<p><strong>•rules.py</strong>：设计一定的规则来判断每个文本块交给处理程序将要加什么标记</p>
+<p><strong>•markup.py</strong>：对整个文本进行解析的程序</p>
+<h2 id="三、-源代码"><a href="#三、-源代码" class="headerlink" title="三、 源代码"></a>三、 源代码</h2><h3 id="1-util-py"><a href="#1-util-py" class="headerlink" title="1.util.py"></a>1.util.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;处理 TXT 文本，创建返回文本块的生成器</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成器函数，函数调用为生成器</span></span><br><span class="line"><span class="comment"># 调用此函数时，file 参数一定是 IOWrapper 对象，IOWrapper 对象是迭代器对象</span></span><br><span class="line"><span class="comment"># 该函数的作用是给文本文件的 IOWrapper 迭代器的末尾增加一个换行符</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lines</span>(<span class="params">file</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;生成器，在文本最后加一空行</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> file:</span><br><span class="line">        <span class="keyword">yield</span> line</span><br><span class="line">    <span class="keyword">yield</span> <span class="string">&#x27;\n&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 同上一个函数 lines ，它也是个生成器函数</span></span><br><span class="line"><span class="comment"># 调用此函数时，file 参数一定是 IOWrapper 对象，IOWrapper 对象是迭代器对象</span></span><br><span class="line"><span class="comment"># 函数的返回值是生成器，生成器的每次迭代都会返回一个文本块</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">blocks</span>(<span class="params">file</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;生成器，将 TXT 文件内容生成一个个单独的文本块，按空行分</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    block = []</span><br><span class="line">    <span class="comment"># 使用 for 循环调用生成器</span></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> lines(file):</span><br><span class="line">        <span class="comment"># 如果不是空行</span></span><br><span class="line">        <span class="keyword">if</span> line.strip():</span><br><span class="line">            <span class="comment"># 将该行数据添加到 block 列表里</span></span><br><span class="line">            block.append(line)</span><br><span class="line">        <span class="comment"># 如果是空行，且 block 列表里有内容</span></span><br><span class="line">        <span class="comment"># 这里可以看出 lines 生成器函数的作用了，如果最后一行不是空行</span></span><br><span class="line">        <span class="comment"># 那么最后一个文本块就不会作为 yield 的参数被生成器返回</span></span><br><span class="line">        <span class="keyword">elif</span> block:</span><br><span class="line">            <span class="keyword">yield</span> <span class="string">&#x27;&#x27;</span>.join(block).strip()</span><br><span class="line">            <span class="comment"># 每次生成文本块后，要清空 block 列表</span></span><br><span class="line">            block = []</span><br></pre></td></tr></table></figure>
+<h3 id="2-handlers-py"><a href="#2-handlers-py" class="headerlink" title="2.handlers.py"></a>2.handlers.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">HTML 文本处理类，用于打印各种 HTML 标签</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Handler</span>:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    处理程序父类</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">callback</span>(<span class="params">self, prefix, name, *args</span>):</span></span><br><span class="line">        <span class="comment"># 获取处理方法，getattr 接收三个参数</span></span><br><span class="line">        <span class="comment"># 1、Python 对象</span></span><br><span class="line">        <span class="comment"># 2、属性字符串</span></span><br><span class="line">        <span class="comment"># 3、缺省值</span></span><br><span class="line">        <span class="comment"># 返回值为 Python 对象的属性值，如果没有此属性值，返回第三个参数</span></span><br><span class="line">        method = <span class="built_in">getattr</span>(self, prefix + name, <span class="literal">None</span>)</span><br><span class="line">        <span class="comment"># 调用处理方法，将其返回值作为当前函数的返回值</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">callable</span>(method): <span class="keyword">return</span> method(*args)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start</span>(<span class="params">self, name</span>):</span></span><br><span class="line">        self.callback(<span class="string">&#x27;start_&#x27;</span>, name)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">end</span>(<span class="params">self, name</span>):</span></span><br><span class="line">        self.callback(<span class="string">&#x27;end_&#x27;</span>, name)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 参数 name 的值为过滤器名字，是字符串</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sub</span>(<span class="params">self, name</span>):</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">substitution</span>(<span class="params">match</span>):</span></span><br><span class="line">            result = self.callback(<span class="string">&#x27;sub_&#x27;</span>, name, match)</span><br><span class="line">            <span class="keyword">if</span> result <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                result = match.group(<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> result</span><br><span class="line">        <span class="keyword">return</span> substitution</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HTMLRenderer</span>(<span class="params">Handler</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    HTML 处理程序，给文本块加相应的 HTML 标记</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 以下各个方法分别在符合条件时被调用，打印标签或标签的 text 值</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start_document</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;html&gt;&lt;head&gt;&lt;title&gt;ShiYanLou&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">end_document</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;/body&gt;&lt;/html&gt;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start_paragraph</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;p style=&quot;color: #444;&quot;&gt;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">end_paragraph</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;/p&gt;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start_heading</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;h2 style=&quot;color: #68BE5D;&quot;&gt;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">end_heading</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;/h2&gt;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start_list</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;ul style=&quot;color: #363736;&quot;&gt;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">end_list</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;/ul&gt;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start_listitem</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;li&gt;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">end_listitem</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;/li&gt;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start_title</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;h1 style=&quot;color: #1ABC9C;&quot;&gt;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">end_title</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;/h1&gt;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sub_emphasis</span>(<span class="params">self, match</span>):</span></span><br><span class="line">        <span class="keyword">return</span>(<span class="string">&#x27;&lt;em&gt;%s&lt;/em&gt;&#x27;</span> % match.group(<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sub_url</span>(<span class="params">self, match</span>):</span></span><br><span class="line">        s = (<span class="string">&#x27;&lt;a target=&quot;_blank&quot; style=&quot;text-decoration: none;&#x27;</span></span><br><span class="line">                <span class="string">&#x27;color: #BC1A4B;&quot; href=&quot;&#123;&#125;&quot;&gt;&#123;&#125;&lt;/a&gt;&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> s.<span class="built_in">format</span>(match.group(<span class="number">1</span>), match.group(<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sub_mail</span>(<span class="params">self, match</span>):</span></span><br><span class="line">        s = (<span class="string">&#x27;&lt;a style=&quot;text-decoration: none;color: #BC1A4B;&quot; &#x27;</span></span><br><span class="line">                <span class="string">&#x27;href=&quot;mailto:&#123;&#125;&quot;&gt;&#123;&#125;&lt;/a&gt;&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> s.<span class="built_in">format</span>(match.group(<span class="number">1</span>), match.group(<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">feed</span>(<span class="params">self, data</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(data)</span><br></pre></td></tr></table></figure>
+<h3 id="3-rules-py"><a href="#3-rules-py" class="headerlink" title="3.rules.py"></a>3.rules.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;处理文本块的规则类，所有类均为单例模式，在程序运行时除了 Rule 每个类仅创建一个实例</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rule</span>:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    所有规则类的父类</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">action</span>(<span class="params">self, block, handler</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        加标记，以下三行执行打印 HTML 标签的功能</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        handler.start(self.<span class="built_in">type</span>)    <span class="comment"># 打印标签头</span></span><br><span class="line">        handler.feed(block)         <span class="comment"># 打印标签 text 部分</span></span><br><span class="line">        handler.end(self.<span class="built_in">type</span>)      <span class="comment"># 打印标签尾</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span>                 <span class="comment"># 打印完成，返回 True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HeadingRule</span>(<span class="params">Rule</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    一号标题规则，HTML 文件的一级标题规则（最大字号）&lt;h1&gt; 标签</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">type</span> = <span class="string">&#x27;heading&#x27;</span>    <span class="comment"># 文本块类型</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">condition</span>(<span class="params">self, block</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        判断文本块是否符合规则，返回值为布尔值 True 或 False</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">not</span> <span class="string">&#x27;\n&#x27;</span> <span class="keyword">in</span> block <span class="keyword">and</span> <span class="built_in">len</span>(block) &lt;= <span class="number">70</span> <span class="keyword">and</span> <span class="keyword">not</span> block[-<span class="number">1</span>] == <span class="string">&#x27;:&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TitleRule</span>(<span class="params">HeadingRule</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    二号标题规则，次级标题规则，继承一号标题规则类 &lt;h2&gt; 标签</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">type</span> = <span class="string">&#x27;title&#x27;</span>  <span class="comment"># 文本块类型</span></span><br><span class="line">    first = <span class="literal">True</span>    <span class="comment"># 这是一个浮动值</span></span><br><span class="line">                    <span class="comment"># 首次调用该类的实例，该值为 True</span></span><br><span class="line">                    <span class="comment"># 之后调用该类的实例，该值为 False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">condition</span>(<span class="params">self, block</span>):</span></span><br><span class="line">        <span class="comment"># 以下三行代码保证在首次调用该类实例和后续调用时 first 的值不同</span></span><br><span class="line">        <span class="comment"># 符合一号标题规则的文本块一定符合二号标题规则，它们只有先后次序这一个区别</span></span><br><span class="line">        <span class="comment"># 首次调用时返回 False ，即代码块不符合二号标题规则</span></span><br><span class="line">        <span class="comment"># 之后调用返回 True ，即使用该类的 action 方法进行处理</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.first:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        self.first = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>().condition(block)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListItemRule</span>(<span class="params">Rule</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    列表项规则，&lt;li&gt; 标签</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">type</span> = <span class="string">&#x27;listitem&#x27;</span>   <span class="comment"># 文本块类型</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">condition</span>(<span class="params">self, block</span>):</span></span><br><span class="line">        <span class="comment"># 行首为减号，则该代码块符合列表项规则</span></span><br><span class="line">        <span class="keyword">return</span> block[<span class="number">0</span>] == <span class="string">&#x27;-&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">action</span>(<span class="params">self, block, handler</span>):</span></span><br><span class="line">        handler.start(self.<span class="built_in">type</span>)        <span class="comment"># 打印 &lt;li&gt; 标签头</span></span><br><span class="line">        handler.feed(block[<span class="number">1</span>:].strip()) <span class="comment"># 打印 &lt;li&gt; 标签的 text 部分，注意去掉减号</span></span><br><span class="line">        handler.end(self.<span class="built_in">type</span>)          <span class="comment"># 打印 &lt;li&gt; 标签尾</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span>                     <span class="comment"># 处理完毕，返回 True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListRule</span>(<span class="params">ListItemRule</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    列表规则，&lt;ul&gt; 标签</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">type</span> = <span class="string">&#x27;list&#x27;</span>   <span class="comment"># 文本块类型</span></span><br><span class="line">    inside = <span class="literal">False</span>  <span class="comment"># 该值亦为浮动值，判断是否为列表规则</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">condition</span>(<span class="params">self, block</span>):</span></span><br><span class="line">        <span class="comment"># 判断代码块是否符合规则这里返回 True</span></span><br><span class="line">        <span class="comment"># 在 action 方法中调用父类的同名方法再次判断</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">action</span>(<span class="params">self, block, handler</span>):</span></span><br><span class="line">        <span class="comment"># 如果 self.inside 为 False 且父类的 condition 方法返回值为 True</span></span><br><span class="line">        <span class="comment"># 第一次出现符合列表项规则的文本块时，满足这两个要求</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.inside <span class="keyword">and</span> <span class="built_in">super</span>().condition(block):</span><br><span class="line">            <span class="comment"># 打印 &lt;ul&gt; 标签头</span></span><br><span class="line">            handler.start(self.<span class="built_in">type</span>)</span><br><span class="line">            <span class="comment"># 将 inside 属性值改为 True</span></span><br><span class="line">            self.inside = <span class="literal">True</span></span><br><span class="line">        <span class="comment"># 打印一堆连续 li 标签后，出现非列表项规则的文本块</span></span><br><span class="line">        <span class="keyword">elif</span> self.inside <span class="keyword">and</span> <span class="keyword">not</span> <span class="built_in">super</span>().condition(block):</span><br><span class="line">            <span class="comment"># 打印 &lt;ul&gt; 标签尾</span></span><br><span class="line">            handler.end(self.<span class="built_in">type</span>)</span><br><span class="line">            <span class="comment"># 再次修改 inside 属性为 False</span></span><br><span class="line">            self.inside = <span class="literal">False</span></span><br><span class="line">        <span class="comment"># 该方法只用于在合适的条件下打印 &lt;ul&gt; 标签</span></span><br><span class="line">        <span class="comment"># 永远返回 False ，以调用其它规则实例继续处理</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ParagraphRule</span>(<span class="params">Rule</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    段落规则，&lt;p&gt; 标签</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">type</span> = <span class="string">&#x27;paragraph&#x27;</span>  <span class="comment"># 文本块类型</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">condition</span>(<span class="params">self, block</span>):</span></span><br><span class="line">        <span class="comment"># 不符合以上各类的判断规则的代码块一律按此规则处理</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 注意这个列表中实例的顺序不能随意改动，原因参见相应类中的注释说明</span></span><br><span class="line">rule_list = [ListRule(), ListItemRule(), TitleRule(), HeadingRule(),</span><br><span class="line">        ParagraphRule()]</span><br></pre></td></tr></table></figure>
+<p>###4.markup.py</p>
+<figure class="highlight plaintext"><figcaption><span>-*- coding: UTF-8 -*-</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">import sys, re</span><br><span class="line">from handlers import HTMLRenderer</span><br><span class="line">from util import blocks</span><br><span class="line">from rules import rule_list</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Parser:</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    解析器父类</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    def __init__(self, handler):</span><br><span class="line">        self.handler = handler</span><br><span class="line">        self.rules = []     # 判断文本块规则的实例列表</span><br><span class="line">        self.filters = []   # 过滤方法列表</span><br><span class="line"></span><br><span class="line">    def addRule(self, rule):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        向 self.rules 列表中添加规则类的实例</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        self.rules.append(rule)</span><br><span class="line"></span><br><span class="line">    def addFilter(self, pattern, name):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        向 self.filters 列表中添加过滤函数</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        # 该过滤器函数接收两个参数：文本块和 HTMLRenderer 类的实例</span><br><span class="line">        def filter(block, handler):</span><br><span class="line">            # re.sub 接收三个参数 a b c ，将字符串 c 中的 a 字段替换成 b</span><br><span class="line">            # b 的值可以是字符串或函数</span><br><span class="line">            # 在下一行代码中 b 参数的值为 handler 的 sub 方法的返回值</span><br><span class="line">            # sub 方法的参数 name 的值为字符串，它和 &#x27;sub_&#x27; 组成一个大字符串</span><br><span class="line">            # 大字符串就是 handler 的一个方法名</span><br><span class="line">            return re.sub(pattern, handler.sub(name), block)</span><br><span class="line">        self.filters.append(filter)</span><br><span class="line"></span><br><span class="line">    def parse(self, file):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        核心方法，解析文本，打印符合要求的标签，写入新的文件中</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        # 调用 handler 实例的 start 方法，参数为 handler 实例的某个方法名的一部分</span><br><span class="line">        # 结果就是调用 handler 的 start_document 方法，打印文档的 head 标签</span><br><span class="line">        self.handler.start(&#x27;document&#x27;)</span><br><span class="line">        # blocks 是从 urti.py 文件引入的生成器函数</span><br><span class="line">        # blocks(file) 就是一个生成器</span><br><span class="line">        # 使用 for 循环生成器</span><br><span class="line">        for block in blocks(file):</span><br><span class="line">            # 调用过滤器，对每个文本块进行处理</span><br><span class="line">            for filter in self.filters:</span><br><span class="line">                block = filter(block, self.handler)</span><br><span class="line">            # 循环规则类的实例</span><br><span class="line">            for rule in self.rules:</span><br><span class="line">                # 如果符合规则，调用实例的 action 方法打印标签</span><br><span class="line">                if rule.condition(block):</span><br><span class="line">                    last = rule.action(block, self.handler)</span><br><span class="line">                    # 如果 action 方法的返回值为 True</span><br><span class="line">                    # 表示该文本块处理完毕，结束循环</span><br><span class="line">                    if last:</span><br><span class="line">                        break</span><br><span class="line">        # 同 self.handler.start</span><br><span class="line">        # 调用 handler 的 end_document 方法打印 &#x27;&lt;/body&gt;&lt;/html&gt;&#x27;</span><br><span class="line">        self.handler.end(&#x27;document&#x27;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class BasicTextParser(Parser):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    纯文本解析器</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, handler):</span><br><span class="line">        # 运行父类 Parser 的同名方法</span><br><span class="line">        super().__init__(handler)</span><br><span class="line">        # 增加规则类的实例到 self.urls 列表</span><br><span class="line">        for rule in rule_list:</span><br><span class="line">            self.addRule(rule)</span><br><span class="line">        # 增加三个过滤函数，分别处理斜体字段、链接和邮箱</span><br><span class="line">        self.addFilter(r&#x27;\*(.+?)\*&#x27;, &#x27;emphasis&#x27;)</span><br><span class="line">        self.addFilter(r&#x27;(http://[\.a-zA-Z/]+)&#x27;, &#x27;url&#x27;)</span><br><span class="line">        self.addFilter(r&#x27;([\.a-zA-Z]+@[\.a-zA-Z]+[a-zA-Z]+)&#x27;, &#x27;mail&#x27;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    &#x27;&#x27;&#x27;</span><br><span class="line">    主函数，控制整个程序的运行</span><br><span class="line">    &#x27;&#x27;&#x27;</span><br><span class="line">    handler = HTMLRenderer()</span><br><span class="line">    parser = BasicTextParser(handler)</span><br><span class="line">    # 将文件内容作为标准输入，sys.stdin 获取标准输入的内容，生成 IOWrapper 迭代器对象</span><br><span class="line">    parser.parse(sys.stdin)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<h2 id="四、-结果及分析"><a href="#四、-结果及分析" class="headerlink" title="四、 结果及分析"></a>四、 结果及分析</h2><p> 在这个小程序中，我们使用了 Python 来解析纯文本文件并生成 HTML 文件，这个只是简单实现，支持了很少部分的 Markdown 语法，通过这个案例大家可以动手试试解析完整的 Markdown 文件。<br><img data-src="https://img-blog.csdnimg.cn/img_convert/7deabee8376b85861440a40a93af0f4c.png" alt="图片描述"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Shineme
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://shineme.ltd/2021/06/17/Python%E5%AE%9E%E7%8E%B0%E6%96%87%E6%9C%AC%E8%A7%A3%E6%9E%90%E5%99%A8/" title="Python实现文本解析器">https://shineme.ltd/2021/06/17/Python实现文本解析器/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-shine-xmt/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-SHINE-XMT</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/17/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="prev" title="Python 作业">
+      <i class="fa fa-chevron-left"></i> Python 作业
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python-%E5%AE%9E%E7%8E%B0%E6%96%87%E6%9C%AC%E8%A7%A3%E6%9E%90%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">Python 实现文本解析器 </span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81-%E5%86%85%E5%AE%B9%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.</span> <span class="nav-text">一、 内容介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">1.1.1.</span> <span class="nav-text">知识点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E5%8F%8A%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.2.</span> <span class="nav-text">二、实现原理及步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81-%E6%BA%90%E4%BB%A3%E7%A0%81"><span class="nav-number">1.3.</span> <span class="nav-text">三、 源代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-util-py"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.util.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-handlers-py"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.handlers.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-rules-py"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.rules.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81-%E7%BB%93%E6%9E%9C%E5%8F%8A%E5%88%86%E6%9E%90"><span class="nav-number">1.4.</span> <span class="nav-text">四、 结果及分析</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shineme"
+      src="http://q2.qlogo.cn/headimg_dl?bs=qq&dst_uin=1437604039&spec=100">
+  <p class="site-author-name" itemprop="name">Shineme</p>
+  <div class="site-description" itemprop="description">为分享而生</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xmt3061123" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xmt3061123" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xmtgcc@gmail.com" title="E-Mail → mailto:xmtgcc@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-shine-xmt/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-shine-xmt.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://xmt.shineme.ltd/" title="http:&#x2F;&#x2F;xmt.shineme.ltd" rel="noopener" target="_blank">主页</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://xmt.patatooo.cn:81/wordpress/" title="http:&#x2F;&#x2F;xmt.patatooo.cn:81&#x2F;wordpress&#x2F;" rel="noopener" target="_blank">wordpressblog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shineme</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">14k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">12 分钟</span>
+</div>
+<span id="runtime_span"></span>
+<script type="text/javascript">function show_runtime(){window.setTimeout("show_runtime()",1000);X=new 
+Date("5/28/2021 18:00:00");
+Y=new Date();T=(Y.getTime()-X.getTime());M=24*60*60*1000;
+a=T/M;A=Math.floor(a);b=(a-A)*24;B=Math.floor(b);c=(b-B)*60;C=Math.floor((b-B)*60);D=Math.floor((c-C)*60);
+runtime_span.innerHTML="本站勉强运行: "+A+"天"+B+"小时"+C+"分"+D+"秒"}show_runtime();</script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  <script src="//code.tidio.co/1qqhwjar8wectl4a7f2b8besrchnc8i4.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+      <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/source/js/src/clicklove.js"></script>
+<!-- 动态背景 -->
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true},"log":false});</script></body>
+
+</html>
